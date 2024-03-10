@@ -1,0 +1,79 @@
+# Code Diary
+## Task 1
+March 4th, 2024 2:31:58 PM
+- I'm going to make a function in my main C file which takes in the size of the array that I'm going to create with a pointer return type to return the memory allocated in the function. I'm going to use `malloc` to allocate memory because `malloc` was used in class. I'm not sure how to generate a random number in C, but I'm going to Google the answer. To display the items in the array, I'm going to loop through each item and print it on the screen.
+- I'm Googling how to generate a random number.
+- I'm going to use `rand() % 101` to generate a number between 0 and 100.
+- Time to start coding.
+- I'm not sure how to set my return type to a pointer, so I'm going to do some searching through the slides.
+- Looks like the way to do this is `int*`
+- I defined the function like this `int* dyn_mem_alloc(int size)`
+- Now, I'm going to allocate memory for the array. I'm not sure how to do this, so I'm going to review the slides from pointers. I remember learning this in class.
+- I'm reading about `malloc` and `calloc`. Since we are going to be generating 100 random numbers, we don't need to initialize every item in the array. I'll use `malloc` since it does not initialize the values.
+- I allocated memory for the array. Now I'm going to loop from 0 to the array size. I'm doing this so I can append it to the array.
+- I realized I wasn't error checking, so I added a check to make sure that the memory successfully allocates before continuing.
+- I made a for loop looping from zero to size - 1
+- I'm going to test and make sure the loop works before continuing to learn about pointer math.
+- The code works. While compiling there was a warning, I am returning `EXIT_FAILURE` but `EXIT_FAILURE` is not a pointer. I'll come back to this.
+- Now to generate a random number.
+- I generated a random number using `rand() % 100`, however, it goes from `0 to 100`. I'm going to try `rand() % 100 + 1` to generate a number between 0 and 1.
+- Now I'm going to assign the random number to `p[i]`. This is assigning our random number to the spot in memory we created for it.
+- Testing... It's alive!!
+- Now, I'm going to display the items in the array. I'll use printf for this. Each time memory is assigned in the array, print the value.
+- I'm going to fix the warning with `EXIT_FAILURE`. To do this, I'm going to return NULL. Then in my `main` function, I'll check that the return value isn't NULL.
+- While testing, I noticed that the random numbers weren't random. They're always the same. I'm going to do some searching. I think it has to do with there not being a seed.
+- I'm going to set the seed to the current time using `srand()`
+- I forgot to include `time.h` doing that now.
+- -Task 1 is complete!
+March 4th, 2024 3:09:33 PM
+
+## Task 2
+March 4th, 2024 3:10:02 PM
+- I'm going to start by printing out the array. I will do this using a for loop.
+- To find the maximum and minimum values, I will use a for loop with two if statements inside. The if statement will check if the number is greater than or less than the last number, if it is greater or smaller, it will assign to the respective variables.
+- To compute the sum, I will have a variable which is initialized with zero. I'll use a for loop to go through every item in the array and add it to the variable.
+- To compute the average, I will call my sum function and divide it by the number of integers in the array.
+- To reverse the array, I will loop through every item in the array. I will swap each item using pointer manipulation until the end of the loop. At the end, the array will be reversed.
+- Starting to code print array.
+- I defined the print array function. It takes in `int*` and returns void.
+- I realized that I don't know how to get the length of an array. Googling...
+- I came up with this: `size_t size = sizeof arr / sizeof(int);`. I am getting the size of my array in bytes, and dividing it by the size of each integer. This will give me the number of elements (or indexes) in the array.
+- Size is not working. Doing some more searching.
+- I'm going to store the length of the list in the first element. After searching, I found out that what I was doing was returning the size of the pointer, not the elements inside. Making the first element the size of the array is much easier.
+- I changed my dynamic allocation function from task 1 to make the element at index 0 the size of the array (minus itself).
+- Going back to my print array function. Before looping, I need to get the first element of the array which contains the size.
+- I did that, now I'm going to loop through the remainder of the elements and print their value.
+- Working on the max function, I'm going to copy the code from my print function. On each iteration, I'm going to check if the value is greater than my current variable if it is set current to the number.
+- Then I'm going to return the return the current variable.
+- Repeat for the min function. I changed the current to 100 since that's the max number and changed the check from greater to less than.
+- Testing and everything works.
+- Now, I'm going to start with the sum and average. Similar to the last two functions, I'm going to loop and instead of an if statement inside the loop, I'm just going to append to a variable.
+- Done the sum function, tested and it works. Pretty straightforward.
+- For the average function, I'm going to call the sum function and then get the first element of the array (element count). Afterwards, I'll divide. I'm going to use float for the return type.
+- I can't remember which way to do float division. Googling...
+- Figured it out, I need to do `(float)size`
+- Done. Testing and it works properly.
+March 4th, 2024 3:49:43 PM
+March 4th, 2024 5:01:59 PM
+- To reverse the array, I will loop through the array and swap the pointers.
+- I'm going to create a function called swap which will swap two pointers. It starts by copying pointer A. Then it sets pointer A to pointer B and pointer B to pointer A's copy.
+- In my reverse function, I am going to have a variable with the size and two variables called pointer 1 and pointer 2. Pointer 1 will be the second element in the array. Pointer 2 will be the last element in the array. In a while loop, I'll swap the pointers until I end up meeting in the middle.
+- Coding the swap part...
+I tested the swap function and it works!
+- Writing the reverse section... fairly straightforward.
+- Testing and no errors. The code works.
+- I tried reversing the array twice and it does what's expected.
+
+# Task 3
+- Deallocate the memory using `free`
+- I made a function which takes in a pointer and then uses `free` to free the memory.
+- I tested this by deallocating the memory, and then trying to use it. As expected, some weird output happened when trying to print something that didn't exist.
+March 4th, 2024 5:21:57 PM
+
+March 4th, 2024 6:53:40 PM
+# Task 4
+- I'm going to use code from previous assignments to get the number from the user.
+- I'm going to use that number when I call my memory allocation function.
+- All of the other functions are already called since I used them while testing.
+- Code works!
+March 4th, 2024 7:10:23 PM

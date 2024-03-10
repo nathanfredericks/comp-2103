@@ -1,0 +1,20 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -pedantic
+TARGET1 = default
+TARGET2 = switched
+TARGET3 = reversed
+TARGET_FILE = assignment2.c
+
+all: $(TARGET1) $(TARGET2) $(TARGET3)
+
+$(TARGET1): $(TARGET_FILE)
+	$(CC) $(CFLAGS) -o $(TARGET1) $(TARGET_FILE)
+
+$(TARGET2): $(TARGET_FILE)
+	 $(CC) $(CFLAGS) -o $(TARGET2) -DSWITCHED $(TARGET_FILE)
+
+$(TARGET3): $(TARGET_FILE)
+	 $(CC) $(CFLAGS) -o $(TARGET3) -DSWITCHED -DREVERSED $(TARGET_FILE)
+
+clean:
+	rm $(TARGET1) $(TARGET2) $(TARGET3)
