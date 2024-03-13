@@ -34,6 +34,7 @@ int main(void) {
     for (i = 0; i < 10; i++) {
         printf("%d\n", p2[i]);
     }
+    free(p2);
     float* p3 = (float*)mem_alloc(5, sizeof(float));
     printf("%d\n", &p3);
     p3[0] = 2.0;
@@ -42,11 +43,12 @@ int main(void) {
     p3[3] = 8.0;
     p3[4] = 10.0;
     for (i = 0; i < 5; i++) {
-        printf("%d\n", p3[i]);
+        printf("%.2f\n", p3[i]);
     }
     float *p4 = (float*)change_mem_alloc((void*)&p3, 10, sizeof(float));
     printf("%d\n", &p4);
     for (i = 0; i < 10; i++) {
-        printf("%d\n", p4[i]);
+        printf("%.2f\n", p4[i]);
     }
+    free(p4);
 }
