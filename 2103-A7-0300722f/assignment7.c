@@ -60,7 +60,7 @@ int addNode(ListTP this, int x) {
     NodeTP node;
     if ((node = malloc(sizeof(NodeT))) == NULL) {
         fprintf(stderr, "Error allocating memory for node.\n");
-        return 0;
+        return 1;
     };
     node->x = x;
     node->next = NULL;
@@ -68,7 +68,7 @@ int addNode(ListTP this, int x) {
         this->head = node;
         this->tail = node;
         node->prev = NULL;
-        return 1;
+        return 0;
     }
     // Set the tail's next pointer to the new node.
     this->tail->next = node;
@@ -76,7 +76,7 @@ int addNode(ListTP this, int x) {
     node->prev = this->tail;
     // Set the tail to the new node
     this->tail = node;
-    return 1;
+    return 0;
 }
 
 // Add a node to the start of the list.
@@ -84,7 +84,7 @@ int addToStartOfList(ListTP this, int x) {
     NodeTP node;
     if ((node = malloc(sizeof(NodeT))) == NULL) {
         fprintf(stderr, "Error allocating memory for node.\n");
-        return 0;
+        return 1;
     };
     if (this->head == NULL) {
         this->head = node;
@@ -102,23 +102,23 @@ int addToStartOfList(ListTP this, int x) {
         node->x = x;
         node->prev = NULL;
     }
-    return 1;
+    return 0;
 }
 
 // Add a node to a position in the list.
 int addNodePosition(ListTP this, int x, int pos) {
     if (pos < 0) {
         fprintf(stderr, "Error adding node to position less than zero.\n");
-        return 0;
+        return 1;
     }
     NodeTP aux, node;
     if ((aux = malloc(sizeof(NodeT))) == NULL) { // Used for traversal through the list.
         fprintf(stderr, "Error allocating memory for aux.\n");
-        return 0;
+        return 1;
     };
     if ((node = malloc(sizeof(NodeT))) == NULL) {
         fprintf(stderr, "Error allocating memory for node.\n");
-        return 0;
+        return 1;
     };
     // If the position is the head node.
     if (pos == 0) {
@@ -127,7 +127,7 @@ int addNodePosition(ListTP this, int x, int pos) {
         node = NULL;
         free(aux);
         aux = NULL;
-        return 1;
+        return 0;
     }
     // If the list is empty.
     if (this->head == NULL) {
@@ -139,7 +139,7 @@ int addNodePosition(ListTP this, int x, int pos) {
             curr++;
         if (curr != pos) {
             fprintf(stderr, "Error adding node to position exceeding list length.\n");
-            return 0;
+            return 1;
         }
     }
     node->x = x;
@@ -157,7 +157,7 @@ int addNodePosition(ListTP this, int x, int pos) {
     if (node->next == NULL) {
         this->tail = node;
     }
-    return 1;
+    return 0;
 }
 
 // Delete the head node from the list.
@@ -173,7 +173,7 @@ int deleteHeadNode(ListTP this) {
     // Free the old head.
     free(current);
     current = NULL;
-    return 1;
+    return 0;
 }
 
 // Delete the first node in the list with value.
@@ -181,12 +181,12 @@ int deleteNode(ListTP this, int value) {
     // Check if head node has value
     if (this->head->x == value) {
         deleteHeadNode(this);
-        return 1;
+        return 0;
     }
     NodeTP aux;
     if ((aux = malloc(sizeof(NodeT))) == NULL) { // Used for traversal through the list.
         fprintf(stderr, "Error allocating memory for aux.\n");
-        return 0;
+        return 1;
     };
     // Traverse to the node before the node to delete
     for (aux->next = this->head; aux->next != NULL && aux->next->x != value; aux = aux->next)
@@ -195,7 +195,7 @@ int deleteNode(ListTP this, int value) {
     // If the node to delete is NULL, the node cannot be found.
     if (del == NULL) {
         fprintf(stderr, "Error deleting non-existent node.\n");
-        return 0;
+        return 1;
     }
     // Set the node before the node to delete's next pointer to the node after the node to delete.
     aux->next = aux->next->next;
@@ -207,26 +207,26 @@ int deleteNode(ListTP this, int value) {
         this->tail = aux;
     free(del);
     del = NULL;
-    return 1;
+    return 0;
 }
 
 // Delete entire list.
 int clearList(ListTP this){
     if (this->head == NULL) {
-        return 1;
+        return 0;
     }
     while (deleteHeadNode(this))
         ;
     this->head = NULL;
     this->tail = NULL;
-    return 1;
+    return 0;
 }
 
 // Delete a node from the list by position.
 int deleteNodePosition(ListTP this, int pos) {
     if (pos < 0) {
         fprintf(stderr, "Error deleting node from position less than zero.\n");
-        return 0;
+        return 1;
     }
     if (pos == 0) {
         // Deleting the head node
@@ -235,7 +235,7 @@ int deleteNodePosition(ListTP this, int pos) {
     NodeTP aux;
     if ((aux = malloc(sizeof(NodeT))) == NULL) { // Used for traversal through the list.
         fprintf(stderr, "Error allocating memory for aux.\n");
-        return 0;
+        return 1;
     };
     int curr = 0; // Current position.
     // Traverse to the node before the node to be deleted.
@@ -256,65 +256,62 @@ int deleteNodePosition(ListTP this, int pos) {
         this->tail = aux;
     free(del);
     del = NULL;
-    return 1;
+    return 0;
 }
 
 int main(void) {
     ListTP p = constructList();
 
-    printf("Print empty list:\n");
-    printList(p);
-
-    printf("Add nodes (10, 20, 30, 40, 50) to list:\n");
-    addNode(p, 10);
-    addNode(p, 20);
-    addNode(p, 30);
-    addNode(p, 40);
-    addNode(p, 50);
-    printList(p);
-
-    printf("Print list in reverse:\n");
-    printListReverse(p);
-
-    printf("Add node (5) to the start of list:\n");
-    addToStartOfList(p, 5);
-    printList(p);
-    
-    printf("Add node (25) at position 2:\n");
-    addNodePosition(p, 25, 2);
-    printList(p);
-
-    printf("Add node (15) at position 0 (should add to start):\n");
-    addNodePosition(p, 15, 0);
-    printList(p);
-
-    printf("Add node (35) at negative position (should fail):\n");
-    addNodePosition(p, 35, -1);
-    printList(p);
-
-    printf("Delete node with value 25:\n");
-    deleteNode(p, 25);
-    printList(p);
-
-    printf("Delete node with value 100 (non-existent node):\n");
-    deleteNode(p, 100);
-    printList(p);
-
-    printf("Delete node at position 3:\n");
-    deleteNodePosition(p, 3);
-    printList(p);
-
-    printf("Delete node at position 0 (should delete head):\n");
-    deleteNodePosition(p, 0);
-    printList(p);
-
-    printf("Deleting node at negative position (should fail):\n");
-    deleteNodePosition(p, -1);
-    printList(p);
-
-    printf("Clear list:\n");
-    clearList(p);
-    printList(p);
-
-    return 0;
+    while (1) {
+            printf("Please make a selection:\n");
+            printf("1. Print List\n");
+            printf("2. Print List In Reverse\n");
+            printf("3. Add Node\n");
+            printf("4. Add Node By Position\n");
+            printf("5. Delete Node\n");
+            printf("6. Delete Node By Position\n");
+            printf("7. Exit\n");
+            int selection;
+            scanf("%d", &selection);
+            int x;
+            int pos;
+            switch (selection) {
+                case 1:
+                    printList(p);
+                    break;
+                case 2:
+                    printListReverse(p);
+                    break;
+                case 3:
+                    printf("Value: ");
+                    scanf("%d", &x);
+                    addNode(p, x);
+                    break;
+                case 4:
+                    printf("Value: ");
+                    scanf("%d", &x);
+                    printf("Position: ");
+                    scanf("%d", &pos);
+                    addNodePosition(p, x, pos);
+                    break;
+                case 5:
+                    printf("Value: ");
+                    scanf("%d", &x);
+                    deleteNode(p, x);
+                    break;
+                case 6:
+                    printf("Position: ");
+                    scanf("%d", &pos);
+                    deleteNodePosition(p, pos);
+                    break;
+                case 7:
+                    clearList(p);
+                    return EXIT_SUCCESS;
+                default:
+                    getchar();
+                    printf("Invalid selection.\n");
+                    break;
+            }
+    }
+    return EXIT_SUCCESS;
 }
